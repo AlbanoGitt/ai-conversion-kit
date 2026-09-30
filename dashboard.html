@@ -1,1 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aurevia AI Dashboard</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f3ef;
+      color: #111;
+    }
+
+    header {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: white;
+      border-bottom: 1px solid #e5e2dc;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .back {
+      text-decoration: none;
+      color: #555;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+
+    .welcome {
+      margin-bottom: 40px;
+    }
+
+    .welcome p {
+      color: #777;
+      font-size: 16px;
+    }
+
+    .tools {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 40px;
+    }
+
+    .tool {
+      background: white;
+      border: 1px solid #e4e1db;
+      border-radius: 14px;
+      padding: 24px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .tool:hover {
+      transform: translateY(-2px);
+      border-color: #aaa;
+    }
+
+    .tool h3 {
+      margin-top: 0;
+    }
+
+    .tool p {
+      color: #777;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .generator {
+      background: white;
+      border-radius: 18px;
+      padding: 30px;
+      border: 1px solid #e4e1db;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      margin-top: 15px;
+      padding: 18px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 16px;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    button {
+      margin-top: 18px;
+      padding: 14px 24px;
+      background: #111;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #result {
+      display: none;
+      margin-top: 25px;
+      padding: 22px;
+      background: #f7f6f3;
+      border-radius: 12px;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">AUREVIA</div>
+  <a class="back" href="index.html">← Back to Aurevia</a>
+</header>
+
+<main>
+
+  <div class="welcome">
+    <h1>Aurevia AI</h1>
+    <p>Your AI workspace for creating conversion-focused marketing content.</p>
+  </div>
+
+  <div class="tools">
+
+    <div class="tool" onclick="setTool('product')">
+      <h3>Product Copy</h3>
+      <p>Create compelling product descriptions designed for e-commerce.</p>
+    </div>
+
+    <div class="tool" onclick="setTool('ads')">
+      <h3>Ad Copy</h3>
+      <p>Create hooks, headlines and advertising copy for your products.</p>
+    </div>
+
+    <div class="tool" onclick="setTool('social')">
+      <h3>Social Content</h3>
+      <p>Generate captions and content ideas for your social media.</p>
+    </div>
+
+    <div class="tool" onclick="setTool('email')">
+      <h3>Email Copy</h3>
+      <p>Create promotional and conversion-focused email copy.</p>
+    </div>
+
+  </div>
+
+  <div class="generator">
+
+    <h2 id="generatorTitle">What do you want to create?</h2>
+
+    <textarea
+      id="prompt"
+      placeholder="Tell Aurevia AI what you need..."
+    ></textarea>
+
+    <button id="generateButton" onclick="generateAI()">
+      Generate with Aurevia AI
+    </button>
+
+    <div id="result"></div>
+
+  </div>
+
+</main>
+
+<script>
+
+let currentTool = "";
+
+function setTool(tool) {
+
+  currentTool = tool;
+
+  const prompt = document.getElementById("prompt");
+  const title = document.getElementById("generatorTitle");
+
+  if (tool === "product") {
+    title.textContent = "Create Product Copy";
+    prompt.placeholder =
+      "Example: Write a product description for a minimalist black watch aimed at young professionals.";
+  }
+
+  if (tool === "ads") {
+    title.textContent = "Create Ad Copy";
+    prompt.placeholder =
+      "Example: Create 5 strong ad hooks for a premium black watch.";
+  }
+
+  if (tool === "social") {
+    title.textContent = "Create Social Content";
+    prompt.placeholder =
+      "Example: Create an Instagram caption for a new minimalist watch collection.";
+  }
+
+  if (tool === "email") {
+    title.textContent = "Create Email Copy";
+    prompt.placeholder =
+      "Example: Write a promotional email announcing a 20% launch discount.";
+  }
+
+  prompt.focus();
+}
+
+async function generateAI() {
+
+  const prompt = document.getElementById("prompt").value.trim();
+  const button = document.getElementById("generateButton");
+  const result = document.getElementById("result");
+
+  if (!prompt) {
+    alert("Please enter what you want Aurevia AI to create.");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Aurevia AI is thinking...";
+
+  result.style.display = "block";
+  result.textContent = "Generating...";
+
+  try {
+
+    const response = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        prompt: prompt
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Something went wrong.");
+    }
+
+    result.textContent = data.result;
+
+  } catch (error) {
+
+    result.textContent = "Error: " + error.message;
+
+  }
+
+  button.disabled = false;
+  button.textContent = "Generate with Aurevia AI";
+}
+
+</script>
+
+</body>
+</html>
