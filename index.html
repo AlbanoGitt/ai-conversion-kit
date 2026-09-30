@@ -239,4 +239,77 @@ footer{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;paddin
 
 </div>
 </body>
+  <section id="ai-generator" style="padding:70px 24px;background:#f4f2ee;text-align:center;">
+  <div style="max-width:800px;margin:auto;">
+    <p style="letter-spacing:2px;font-size:13px;font-weight:700;">AUREVIA AI</p>
+
+    <h2 style="font-size:42px;margin:10px 0 15px;">
+      Turn your ideas into conversion-ready copy.
+    </h2>
+
+    <p style="font-size:18px;color:#666;margin-bottom:30px;">
+      Tell Aurevia AI what you need and get marketing copy built for your store.
+    </p>
+
+    <textarea
+      id="aiPrompt"
+      placeholder="Example: Write a product description for a minimalist black watch aimed at young professionals..."
+      style="width:100%;min-height:150px;padding:18px;border:1px solid #ccc;border-radius:12px;font-size:16px;resize:vertical;box-sizing:border-box;"
+    ></textarea>
+
+    <button
+      id="generateBtn"
+      onclick="generateAI()"
+      style="margin-top:18px;padding:15px 28px;border:none;border-radius:10px;background:#111;color:white;font-size:16px;font-weight:700;cursor:pointer;"
+    >
+      Generate with Aurevia AI
+    </button>
+
+    <div
+      id="aiResult"
+      style="display:none;margin-top:30px;text-align:left;background:white;padding:25px;border-radius:14px;border:1px solid #ddd;white-space:pre-wrap;line-height:1.6;"
+    ></div>
+  </div>
+</section>
+
+<script>
+async function generateAI() {
+  const prompt = document.getElementById("aiPrompt").value.trim();
+  const button = document.getElementById("generateBtn");
+  const result = document.getElementById("aiResult");
+
+  if (!prompt) {
+    alert("Please enter a prompt first.");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Aurevia AI is thinking...";
+  result.style.display = "block";
+  result.textContent = "Generating...";
+
+  try {
+    const response = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Something went wrong.");
+    }
+
+    result.textContent = data.result;
+  } catch (error) {
+    result.textContent = "Error: " + error.message;
+  }
+
+  button.disabled = false;
+  button.textContent = "Generate with Aurevia AI";
+}
+</script>
 </html>
