@@ -1,1 +1,613 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
+<title>Aurevia — AI Copy Generator</title>
+
+<style>
+:root{
+  --bg:#fff;
+  --panel:#f4f2ee;
+  --line:#e6e2d9;
+  --ink:#141412;
+  --muted:#6b6658;
+}
+
+*{box-sizing:border-box}
+
+html,body{height:100%}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+header{
+  background:var(--panel);
+  border-bottom:1px solid var(--line);
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.wordmark{
+  font-weight:800;
+  letter-spacing:2px;
+  font-size:13px;
+}
+
+.badge{
+  padding:4px 10px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1px;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+
+main{
+  max-width:760px;
+  margin:0 auto;
+  padding:28px 20px 60px;
+}
+
+h1{
+  font-size:26px;
+  font-weight:800;
+  letter-spacing:-.4px;
+  margin:0 0 4px;
+}
+
+.lede{
+  color:var(--muted);
+  margin:0 0 28px;
+  max-width:520px;
+}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:20px;
+}
+
+.card h2{
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:0 0 14px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+@media(max-width:560px){
+  .grid{grid-template-columns:1fr;}
+}
+
+label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin:0 0 5px;
+  color:var(--muted);
+}
+
+input,select,textarea{
+  width:100%;
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:var(--bg);
+  color:var(--ink);
+  font:inherit;
+  margin-bottom:12px;
+}
+
+textarea{
+  resize:vertical;
+  min-height:54px;
+}
+
+.chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:4px;
+}
+
+.chip{
+  padding:9px 14px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:var(--bg);
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  color:var(--ink);
+}
+
+.chip.active{
+  background:var(--ink);
+  color:var(--bg);
+  border-color:var(--ink);
+}
+
+button.primary{
+  background:var(--ink);
+  color:var(--bg);
+  border:none;
+  border-radius:8px;
+  padding:12px 20px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  width:100%;
+}
+
+button.primary:disabled{
+  opacity:.5;
+  cursor:default;
+}
+
+button.ghost{
+  background:none;
+  border:1px solid var(--line);
+  color:var(--ink);
+  border-radius:8px;
+  padding:8px 14px;
+  font-size:12.5px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.out{
+  white-space:pre-wrap;
+  font-size:14.5px;
+  line-height:1.6;
+  min-height:60px;
+}
+
+.out.placeholder{
+  color:var(--muted);
+  font-style:italic;
+}
+
+.outbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.hint{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+.savebar{
+  font-size:11.5px;
+  color:var(--muted);
+  margin-top:-6px;
+  margin-bottom:16px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="wordmark">AUREVIA</div>
+  <div class="badge">AI Copy Generator</div>
+</header>
+
+<main>
+
+  <h1>Your on-call marketing writer.</h1>
+
+  <p class="lede">
+    Fill in your business once. Pick what you need.
+    Get on-brand copy in seconds — no prompt-writing required.
+  </p>
+
+  <div class="card">
+
+    <h2>Your Business</h2>
+
+    <div class="grid">
+
+      <div>
+        <label>Business name</label>
+        <input id="biz" placeholder="e.g. Marlowe Candle Co.">
+      </div>
+
+      <div>
+        <label>What you sell</label>
+        <input id="product" placeholder="e.g. hand-poured soy candles">
+      </div>
+
+    </div>
+
+    <label>Who buys from you</label>
+    <textarea
+      id="customer"
+      placeholder="e.g. women 25-45 who like cozy, low-key luxury home goods">
+    </textarea>
+
+    <label>What makes you different</label>
+    <textarea
+      id="diff"
+      placeholder="e.g. small-batch, non-toxic, 40hr burn time, handwritten notes with every order">
+    </textarea>
+
+    <div class="grid">
+
+      <div>
+        <label>Brand tone</label>
+        <input
+          id="tone"
+          placeholder="e.g. warm, minimal, a little playful">
+      </div>
+
+      <div>
+        <label>Top benefit to lead with</label>
+        <input
+          id="benefit"
+          placeholder="e.g. fills a room without a headache">
+      </div>
+
+    </div>
+
+    <div class="savebar" id="saveMsg">
+      Saved automatically as you type — only visible to you.
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>What do you need?</h2>
+
+    <div class="chips" id="typeChips">
+
+      <div class="chip active" data-v="Instagram/Facebook caption">
+        Social caption
+      </div>
+
+      <div class="chip" data-v="product page description">
+        Product description
+      </div>
+
+      <div class="chip" data-v="marketing email">
+        Email
+      </div>
+
+      <div class="chip" data-v="short paid ad (Meta/Google)">
+        Ad copy
+      </div>
+
+      <div class="chip" data-v="30-second short-form video script (TikTok/Reels)">
+        Video script
+      </div>
+
+      <div class="chip" data-v="customer review request / follow-up message">
+        Review request
+      </div>
+
+    </div>
+
+    <label style="margin-top:10px">
+      Anything specific for this piece? (optional)
+    </label>
+
+    <textarea
+      id="detail"
+      placeholder="e.g. it's for our new lavender scent launching this Friday">
+    </textarea>
+
+    <button class="primary" id="genBtn">
+      Generate
+    </button>
+
+    <div class="hint" id="statusHint"></div>
+
+  </div>
+
+  <div class="card" id="resultCard" style="display:none">
+
+    <div class="outbar">
+
+      <h2 style="margin:0">
+        Result
+      </h2>
+
+      <div style="display:flex;gap:8px">
+
+        <button class="ghost" id="copyBtn">
+          Copy
+        </button>
+
+        <button class="ghost" id="regenBtn">
+          Regenerate
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="out" id="out"></div>
+
+  </div>
+
+</main>
+
+<script>
+
+const $ = id => document.getElementById(id);
+
+const fields = [
+  "biz",
+  "product",
+  "customer",
+  "diff",
+  "tone",
+  "benefit"
+];
+
+let selectedType = "Instagram/Facebook caption";
+
+
+// -----------------------------
+// SAVE BUSINESS INFORMATION
+// -----------------------------
+
+function loadSaved(){
+
+  try{
+
+    const raw = localStorage.getItem("aurevia_worksheet");
+
+    if(!raw) return;
+
+    const data = JSON.parse(raw);
+
+    fields.forEach(field => {
+
+      if(data[field]){
+        $(field).value = data[field];
+      }
+
+    });
+
+  }catch(e){}
+
+}
+
+
+function save(){
+
+  try{
+
+    const data = {};
+
+    fields.forEach(field => {
+      data[field] = $(field).value;
+    });
+
+    localStorage.setItem(
+      "aurevia_worksheet",
+      JSON.stringify(data)
+    );
+
+  }catch(e){
+
+    $("saveMsg").textContent =
+      "Couldn't save on this device — you'll need to re-enter next time.";
+
+  }
+
+}
+
+
+fields.forEach(field => {
+
+  $(field).addEventListener("input", save);
+
+});
+
+loadSaved();
+
+
+// -----------------------------
+// CONTENT TYPE
+// -----------------------------
+
+document.querySelectorAll(".chip").forEach(chip => {
+
+  chip.addEventListener("click", () => {
+
+    document
+      .querySelectorAll(".chip")
+      .forEach(c => c.classList.remove("active"));
+
+    chip.classList.add("active");
+
+    selectedType = chip.dataset.v;
+
+  });
+
+});
+
+
+// -----------------------------
+// BUILD REQUEST
+// -----------------------------
+
+function buildRequest(){
+
+  return {
+
+    businessName:
+      $("biz").value.trim(),
+
+    product:
+      $("product").value.trim(),
+
+    customer:
+      $("customer").value.trim(),
+
+    differentiator:
+      $("diff").value.trim(),
+
+    tone:
+      $("tone").value.trim(),
+
+    benefit:
+      $("benefit").value.trim(),
+
+    contentType:
+      selectedType,
+
+    specificRequest:
+      $("detail").value.trim()
+
+  };
+
+}
+
+
+// -----------------------------
+// GENERATE
+// -----------------------------
+
+async function generate(){
+
+  const button = $("genBtn");
+
+  const resultCard = $("resultCard");
+
+  const output = $("out");
+
+  button.disabled = true;
+
+  resultCard.style.display = "block";
+
+  output.classList.remove("placeholder");
+
+  output.textContent = "Thinking…";
+
+  $("statusHint").textContent = "";
+
+  try{
+
+    const response = await fetch("/api/generate", {
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify(
+        buildRequest()
+      )
+
+    });
+
+
+    const data = await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error || "Generation failed."
+      );
+
+    }
+
+
+    output.textContent =
+      data.text || "(no output)";
+
+
+  }catch(error){
+
+    output.textContent =
+      "Something went wrong.";
+
+    $("statusHint").textContent =
+      error.message ||
+      "Please try again.";
+
+  }finally{
+
+    button.disabled = false;
+
+  }
+
+}
+
+
+// -----------------------------
+// BUTTONS
+// -----------------------------
+
+$("genBtn").addEventListener(
+  "click",
+  generate
+);
+
+
+$("regenBtn").addEventListener(
+  "click",
+  generate
+);
+
+
+$("copyBtn").addEventListener(
+  "click",
+  async () => {
+
+    const text =
+      $("out").textContent;
+
+    try{
+
+      await navigator.clipboard.writeText(text);
+
+      $("copyBtn").textContent =
+        "Copied";
+
+      setTimeout(() => {
+
+        $("copyBtn").textContent =
+          "Copy";
+
+      },1200);
+
+    }catch(e){}
+
+  }
+);
+
+</script>
+
+</body>
+</html>
