@@ -3,279 +3,860 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aurevia AI Dashboard</title>
+
+  <title>Aurevia AI — Dashboard</title>
 
   <style>
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f3ef;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #f5f5f2;
       color: #111;
     }
 
-    header {
-      height: 72px;
+    button,
+    textarea {
+      font-family: inherit;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 245px;
+      background: #111;
+      color: white;
+      padding: 28px 18px;
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    .logo {
+      padding: 0 12px;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: .2em;
+      margin-bottom: 45px;
+    }
+
+    .workspace-label {
+      padding: 0 12px;
+      color: #777;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .nav-item {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #aaa;
+      text-align: left;
+      padding: 13px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 4px;
+      transition: .2s;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: #222;
+      color: white;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      border-top: 1px solid #292929;
+      padding-top: 20px;
+    }
+
+    .back-home {
+      display: block;
+      color: #888;
+      text-decoration: none;
+      padding: 12px;
+      font-size: 13px;
+    }
+
+    .back-home:hover {
+      color: white;
+    }
+
+    /* MAIN */
+
+    .main {
+      margin-left: 245px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 75px;
+      background: rgba(255,255,255,.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e4e3df;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 40px;
-      background: white;
-      border-bottom: 1px solid #e5e2dc;
+      position: sticky;
+      top: 0;
+      z-index: 5;
     }
 
-    .logo {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    .back {
-      text-decoration: none;
-      color: #555;
+    .topbar-title {
       font-size: 14px;
+      font-weight: 700;
     }
 
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 60px 24px;
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #777;
+      font-size: 12px;
     }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: #4d9b62;
+      border-radius: 50%;
+    }
+
+    .content {
+      max-width: 1200px;
+      padding: 55px 40px 80px;
+      margin: auto;
+    }
+
+    /* HERO */
 
     .welcome {
-      margin-bottom: 40px;
+      margin-bottom: 42px;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      font-size: 10px;
+      font-weight: 900;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    .welcome h1 {
+      margin: 0 0 12px;
+      font-size: clamp(36px, 5vw, 58px);
+      line-height: .98;
+      letter-spacing: -.05em;
     }
 
     .welcome p {
+      margin: 0;
+      max-width: 650px;
       color: #777;
+      line-height: 1.6;
       font-size: 16px;
+    }
+
+    /* TOOLS */
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      color: #888;
+      margin-bottom: 15px;
     }
 
     .tools {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-      margin-bottom: 40px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 38px;
     }
 
     .tool {
       background: white;
-      border: 1px solid #e4e1db;
-      border-radius: 14px;
-      padding: 24px;
+      border: 1px solid #e4e2dd;
+      border-radius: 16px;
+      padding: 22px;
       cursor: pointer;
-      transition: 0.2s;
+      transition: .2s;
     }
 
     .tool:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
       border-color: #aaa;
+      box-shadow: 0 12px 30px rgba(0,0,0,.05);
+    }
+
+    .tool.active {
+      border-color: #111;
+      box-shadow: 0 8px 25px rgba(0,0,0,.07);
+    }
+
+    .tool-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #f0f0ed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      margin-bottom: 17px;
     }
 
     .tool h3 {
-      margin-top: 0;
+      margin: 0 0 7px;
+      font-size: 15px;
     }
 
     .tool p {
-      color: #777;
-      font-size: 14px;
+      margin: 0;
+      color: #888;
+      font-size: 12px;
       line-height: 1.5;
     }
 
-    .generator {
+    /* GENERATOR */
+
+    .workspace {
       background: white;
-      border-radius: 18px;
+      border: 1px solid #e3e1dc;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,.035);
+    }
+
+    .workspace-header {
+      padding: 26px 30px;
+      border-bottom: 1px solid #e9e7e2;
+    }
+
+    .workspace-header h2 {
+      margin: 0 0 7px;
+      font-size: 22px;
+      letter-spacing: -.025em;
+    }
+
+    .workspace-header p {
+      margin: 0;
+      color: #888;
+      font-size: 13px;
+    }
+
+    .generator {
       padding: 30px;
-      border: 1px solid #e4e1db;
+    }
+
+    .prompt-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 10px;
     }
 
     textarea {
+      display: block;
       width: 100%;
       min-height: 180px;
-      margin-top: 15px;
-      padding: 18px;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      font-size: 16px;
       resize: vertical;
-      font-family: inherit;
+      border: 1px solid #d8d6d1;
+      border-radius: 13px;
+      padding: 17px;
+      outline: none;
+      font-size: 15px;
+      line-height: 1.6;
+      background: #fafaf8;
+      transition: .2s;
     }
 
-    button {
-      margin-top: 18px;
-      padding: 14px 24px;
+    textarea:focus {
+      border-color: #111;
+      background: white;
+    }
+
+    .generator-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      gap: 15px;
+    }
+
+    .hint {
+      color: #999;
+      font-size: 11px;
+    }
+
+    .generate {
+      border: 0;
       background: #111;
       color: white;
-      border: none;
+      padding: 14px 22px;
       border-radius: 10px;
-      font-size: 15px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .generate:hover {
+      transform: translateY(-1px);
+      background: #222;
+    }
+
+    .generate:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* OUTPUT */
+
+    .output {
+      display: none;
+      margin-top: 28px;
+      border-top: 1px solid #e5e3df;
+      padding-top: 28px;
+    }
+
+    .output-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .output-title {
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      color: #888;
+    }
+
+    .copy-button {
+      border: 1px solid #ddd;
+      background: white;
+      padding: 8px 13px;
+      border-radius: 8px;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
     }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .copy-button:hover {
+      background: #f5f5f2;
     }
 
-    #result {
-      display: none;
-      margin-top: 25px;
+    .output-box {
+      background: #f7f7f4;
+      border: 1px solid #e6e4df;
+      border-radius: 13px;
       padding: 22px;
-      background: #f7f6f3;
-      border-radius: 12px;
       white-space: pre-wrap;
-      line-height: 1.6;
+      line-height: 1.7;
+      font-size: 14px;
+      min-height: 100px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 900px) {
+      .tools {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+      }
+
+      .logo {
+        margin-bottom: 20px;
+      }
+
+      .workspace-label {
+        display: none;
+      }
+
+      .nav-item {
+        display: none;
+      }
+
+      .sidebar-bottom {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .topbar {
+        padding: 0 20px;
+      }
+
+      .content {
+        padding: 35px 18px 60px;
+      }
+
+      .tools {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .generator {
+        padding: 20px;
+      }
+
+      .workspace-header {
+        padding: 22px 20px;
+      }
+
+      .generator-footer {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .generate {
+        width: 100%;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">AUREVIA</div>
-  <a class="back" href="index.html">← Back to Aurevia</a>
-</header>
+  <!-- SIDEBAR -->
 
-<main>
+  <aside class="sidebar">
 
-  <div class="welcome">
-    <h1>Aurevia AI</h1>
-    <p>Your AI workspace for creating conversion-focused marketing content.</p>
-  </div>
+    <div class="logo">AUREVIA</div>
 
-  <div class="tools">
+    <div class="workspace-label">Workspace</div>
 
-    <div class="tool" onclick="setTool('product')">
-      <h3>Product Copy</h3>
-      <p>Create compelling product descriptions designed for e-commerce.</p>
-    </div>
-
-    <div class="tool" onclick="setTool('ads')">
-      <h3>Ad Copy</h3>
-      <p>Create hooks, headlines and advertising copy for your products.</p>
-    </div>
-
-    <div class="tool" onclick="setTool('social')">
-      <h3>Social Content</h3>
-      <p>Generate captions and content ideas for your social media.</p>
-    </div>
-
-    <div class="tool" onclick="setTool('email')">
-      <h3>Email Copy</h3>
-      <p>Create promotional and conversion-focused email copy.</p>
-    </div>
-
-  </div>
-
-  <div class="generator">
-
-    <h2 id="generatorTitle">What do you want to create?</h2>
-
-    <textarea
-      id="prompt"
-      placeholder="Tell Aurevia AI what you need..."
-    ></textarea>
-
-    <button id="generateButton" onclick="generateAI()">
-      Generate with Aurevia AI
+    <button class="nav-item active">
+      ✦ AI Generator
     </button>
 
-    <div id="result"></div>
+    <button class="nav-item">
+      ◇ My Projects
+    </button>
 
-  </div>
+    <button class="nav-item">
+      ◌ History
+    </button>
 
-</main>
+    <div class="sidebar-bottom">
+      <a class="back-home" href="index.html">
+        ← Back to Aurevia
+      </a>
+    </div>
 
-<script>
+  </aside>
 
-let currentTool = "";
 
-function setTool(tool) {
+  <!-- MAIN -->
 
-  currentTool = tool;
+  <main class="main">
 
-  const prompt = document.getElementById("prompt");
-  const title = document.getElementById("generatorTitle");
+    <div class="topbar">
 
-  if (tool === "product") {
-    title.textContent = "Create Product Copy";
-    prompt.placeholder =
-      "Example: Write a product description for a minimalist black watch aimed at young professionals.";
-  }
+      <div class="topbar-title">
+        Aurevia AI
+      </div>
 
-  if (tool === "ads") {
-    title.textContent = "Create Ad Copy";
-    prompt.placeholder =
-      "Example: Create 5 strong ad hooks for a premium black watch.";
-  }
+      <div class="status">
+        <span class="status-dot"></span>
+        AI online
+      </div>
 
-  if (tool === "social") {
-    title.textContent = "Create Social Content";
-    prompt.placeholder =
-      "Example: Create an Instagram caption for a new minimalist watch collection.";
-  }
+    </div>
 
-  if (tool === "email") {
-    title.textContent = "Create Email Copy";
-    prompt.placeholder =
-      "Example: Write a promotional email announcing a 20% launch discount.";
-  }
 
-  prompt.focus();
-}
+    <div class="content">
 
-async function generateAI() {
+      <!-- WELCOME -->
 
-  const prompt = document.getElementById("prompt").value.trim();
-  const button = document.getElementById("generateButton");
-  const result = document.getElementById("result");
+      <div class="welcome">
 
-  if (!prompt) {
-    alert("Please enter what you want Aurevia AI to create.");
-    return;
-  }
+        <div class="eyebrow">
+          Aurevia Intelligence
+        </div>
 
-  button.disabled = true;
-  button.textContent = "Aurevia AI is thinking...";
+        <h1>
+          What are we<br>
+          creating today?
+        </h1>
 
-  result.style.display = "block";
-  result.textContent = "Generating...";
+        <p>
+          Generate conversion-focused marketing content for your ecommerce business.
+          Choose a tool below or describe exactly what you need.
+        </p>
 
-  try {
+      </div>
 
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        prompt: prompt
-      })
-    });
 
-    const data = await response.json();
+      <!-- TOOLS -->
 
-    if (!response.ok) {
-      throw new Error(data.error || "Something went wrong.");
+      <div class="section-title">
+        Choose a tool
+      </div>
+
+      <div class="tools">
+
+        <div class="tool active" onclick="selectTool('product', this)">
+
+          <div class="tool-icon">
+            ◇
+          </div>
+
+          <h3>Product Copy</h3>
+
+          <p>
+            Product descriptions that communicate value and drive action.
+          </p>
+
+        </div>
+
+
+        <div class="tool" onclick="selectTool('ads', this)">
+
+          <div class="tool-icon">
+            ↗
+          </div>
+
+          <h3>Ad Copy</h3>
+
+          <p>
+            Hooks, headlines and advertising copy for your products.
+          </p>
+
+        </div>
+
+
+        <div class="tool" onclick="selectTool('social', this)">
+
+          <div class="tool-icon">
+            #
+          </div>
+
+          <h3>Social Content</h3>
+
+          <p>
+            Captions and content ideas for your social platforms.
+          </p>
+
+        </div>
+
+
+        <div class="tool" onclick="selectTool('email', this)">
+
+          <div class="tool-icon">
+            @
+          </div>
+
+          <h3>Email Copy</h3>
+
+          <p>
+            Promotional emails designed to turn attention into action.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- GENERATOR -->
+
+      <div class="workspace">
+
+        <div class="workspace-header">
+
+          <h2 id="toolTitle">
+            Product Copy
+          </h2>
+
+          <p id="toolDescription">
+            Tell Aurevia AI about your product and what you want to create.
+          </p>
+
+        </div>
+
+
+        <div class="generator">
+
+          <label class="prompt-label">
+            Your instructions
+          </label>
+
+          <textarea
+            id="prompt"
+            placeholder="Example: Write a persuasive product description for a minimalist black watch aimed at young professionals. Focus on premium design, simplicity and everyday use."
+          ></textarea>
+
+
+          <div class="generator-footer">
+
+            <div class="hint">
+              Aurevia AI • Powered by your AI workspace
+            </div>
+
+            <button
+              class="generate"
+              id="generateButton"
+              onclick="generateAI()"
+            >
+              Generate →
+            </button>
+
+          </div>
+
+
+          <!-- OUTPUT -->
+
+          <div class="output" id="output">
+
+            <div class="output-top">
+
+              <div class="output-title">
+                Generated result
+              </div>
+
+              <button
+                class="copy-button"
+                onclick="copyResult()"
+              >
+                Copy
+              </button>
+
+            </div>
+
+            <div
+              class="output-box"
+              id="result"
+            ></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <script>
+
+    let currentTool = "product";
+
+
+    function selectTool(tool, element) {
+
+      currentTool = tool;
+
+      document.querySelectorAll(".tool").forEach(card => {
+        card.classList.remove("active");
+      });
+
+      element.classList.add("active");
+
+
+      const title = document.getElementById("toolTitle");
+      const description = document.getElementById("toolDescription");
+      const prompt = document.getElementById("prompt");
+
+
+      if (tool === "product") {
+
+        title.textContent = "Product Copy";
+
+        description.textContent =
+          "Tell Aurevia AI about your product and what you want to create.";
+
+        prompt.placeholder =
+          "Example: Write a persuasive product description for a minimalist black watch aimed at young professionals. Focus on premium design, simplicity and everyday use.";
+
+      }
+
+
+      if (tool === "ads") {
+
+        title.textContent = "Ad Copy";
+
+        description.textContent =
+          "Create hooks, headlines and persuasive advertising copy.";
+
+        prompt.placeholder =
+          "Example: Create 5 powerful ad hooks for a premium black watch aimed at young professionals.";
+
+      }
+
+
+      if (tool === "social") {
+
+        title.textContent = "Social Content";
+
+        description.textContent =
+          "Create engaging social media content for your brand.";
+
+        prompt.placeholder =
+          "Example: Write an Instagram caption launching a new minimalist watch collection. Make it premium, concise and engaging.";
+
+      }
+
+
+      if (tool === "email") {
+
+        title.textContent = "Email Copy";
+
+        description.textContent =
+          "Create emails designed to turn attention into action.";
+
+        prompt.placeholder =
+          "Example: Write a launch email announcing a new minimalist watch collection with a limited-time 20% discount.";
+
+      }
+
+      prompt.focus();
+
     }
 
-    result.textContent = data.result;
 
-  } catch (error) {
+    async function generateAI() {
 
-    result.textContent = "Error: " + error.message;
+      const prompt = document.getElementById("prompt").value.trim();
 
-  }
+      const button = document.getElementById("generateButton");
 
-  button.disabled = false;
-  button.textContent = "Generate with Aurevia AI";
-}
+      const output = document.getElementById("output");
 
-</script>
+      const result = document.getElementById("result");
+
+
+      if (!prompt) {
+
+        alert("Tell Aurevia AI what you want to create first.");
+
+        return;
+
+      }
+
+
+      button.disabled = true;
+
+      button.textContent = "Generating...";
+
+      output.style.display = "block";
+
+      result.textContent = "Aurevia AI is working on your request...";
+
+
+      try {
+
+        const response = await fetch("/api/generate", {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            prompt: prompt
+          })
+
+        });
+
+
+        const data = await response.json();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            data.error || "Something went wrong."
+          );
+
+        }
+
+
+        result.textContent = data.result;
+
+
+      } catch (error) {
+
+        result.textContent =
+          "Something went wrong: " + error.message;
+
+      }
+
+
+      button.disabled = false;
+
+      button.textContent = "Generate →";
+
+    }
+
+
+    async function copyResult() {
+
+      const result =
+        document.getElementById("result").textContent;
+
+      if (!result) return;
+
+
+      try {
+
+        await navigator.clipboard.writeText(result);
+
+        const button =
+          document.querySelector(".copy-button");
+
+        button.textContent = "Copied ✓";
+
+        setTimeout(() => {
+
+          button.textContent = "Copy";
+
+        }, 1500);
+
+      } catch {
+
+        alert("Unable to copy the result.");
+
+      }
+
+    }
+
+  </script>
 
 </body>
 </html>
