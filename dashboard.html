@@ -381,6 +381,8 @@
       min-height: 100px;
     }
 
+    
+
     /* MOBILE */
 
     @media (max-width: 900px) {
@@ -459,8 +461,12 @@
 
     <div class="workspace-label">Workspace</div>
 
-    <button class="nav-item active">
+    <button class="nav-item active" id="generatorNav" onclick="showPage('generator')">
       ✦ AI Generator
+    </button>
+
+    <button class="nav-item" id="profileNav" onclick="showPage('profile')">
+      ◈ Business Profile
     </button>
 
     <button class="nav-item">
@@ -676,6 +682,84 @@
 
     let currentTool = "product";
 
+const profileStorageKey = "aurevia_business_profile_v1";
+
+function showPage(page) {
+  const generatorPage = document.getElementById("generatorPage");
+  const profilePage = document.getElementById("profilePage");
+  const generatorNav = document.getElementById("generatorNav");
+  const profileNav = document.getElementById("profileNav");
+
+  generatorPage.classList.toggle("page-hidden", page !== "generator");
+  profilePage.classList.toggle("page-hidden", page !== "profile");
+
+  generatorNav.classList.toggle("active", page === "generator");
+  profileNav.classList.toggle("active", page === "profile");
+
+  document.querySelector(".topbar-title").textContent =
+    page === "profile" ? "Business Profile" : "Aurevia AI";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function loadBusinessProfile() {
+  try {
+    const saved = localStorage.getItem(profileStorageKey);
+    if (!saved) return;
+
+    const profile = JSON.parse(saved);
+
+    [
+      "businessName",
+      "businessWebsite",
+      "businessProducts",
+      "targetAudience",
+      "brandVoice",
+      "marketingGoal",
+      "brandNotes"
+    ].forEach(id => {
+      const field = document.getElementById(id);
+      if (field && typeof profile[id] === "string") {
+        field.value = profile[id];
+      }
+    });
+  } catch (error) {
+    console.error("Unable to load the business profile.");
+  }
+}
+
+document.getElementById("businessProfileForm").addEventListener(
+  "submit",
+  function (event) {
+    event.preventDefault();
+
+    const profile = {};
+
+    [
+      "businessName",
+      "businessWebsite",
+      "businessProducts",
+      "targetAudience",
+      "brandVoice",
+      "marketingGoal",
+      "brandNotes"
+    ].forEach(id => {
+      profile[id] = document.getElementById(id).value.trim();
+    });
+
+    try {
+      localStorage.setItem(profileStorageKey, JSON.stringify(profile));
+
+      document.getElementById("profileSaveStatus").textContent =
+        "Business profile saved successfully.";
+    } catch (error) {
+      document.getElementById("profileSaveStatus").textContent =
+        "Unable to save. Please check your browser storage settings.";
+    }
+  }
+);
+
+loadBusinessProfile();
 
     function selectTool(tool, element) {
 
