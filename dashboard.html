@@ -381,7 +381,52 @@
       min-height: 100px;
     }
 
-    
+    .page-hidden {
+  display: none !important;
+}
+
+.profile-form {
+  display: grid;
+  gap: 20px;
+  padding: 30px;
+}
+
+.profile-field {
+  display: grid;
+  gap: 8px;
+}
+
+.profile-field label {
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.profile-field input,
+.profile-field select,
+.profile-field textarea {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d8d6d1;
+  border-radius: 10px;
+  background: #fafaf8;
+  font: inherit;
+  font-size: 14px;
+}
+
+.profile-field textarea {
+  min-height: 100px;
+}
+
+.profile-field input:focus,
+.profile-field select:focus,
+.profile-field textarea:focus {
+  outline: 1px solid #111;
+}
+
+.profile-save-status {
+  color: #4d8056;
+  font-size: 13px;
+}
 
     /* MOBILE */
 
@@ -505,6 +550,8 @@
 
 
     <div class="content">
+      
+      <div id="generatorPage">
 
       <!-- WELCOME -->
 
