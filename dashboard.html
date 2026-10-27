@@ -1011,11 +1011,17 @@ loadBusinessProfile();
 
           body: JSON.stringify({
             prompt: prompt,
-            tool: currentTool
-          })
-
+            tool: currentTool,
+            profile: (() => {
+              try {
+                return JSON.parse(
+                  localStorage.getItem("aurevia_business_profile_v1")
+                ) || {};
+              } catch {
+                return {};
+              }
+            })()
         });
-
 
         const data = await response.json();
 
