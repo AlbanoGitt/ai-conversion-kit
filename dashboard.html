@@ -721,6 +721,96 @@
       </div>
 
     </div>
+ 
+      <!-- BUSINESS PROFILE -->
+      <section id="profilePage" class="page-hidden">
+
+        <div class="welcome">
+          <div class="eyebrow">Business Intelligence</div>
+          <h1>Your business.<br>Your strategy.</h1>
+          <p>
+            Tell Aurevia about your business so it can create
+            more relevant, consistent marketing content.
+          </p>
+        </div>
+
+        <div class="workspace">
+          <div class="workspace-header">
+            <h2>Business Profile</h2>
+            <p>Your brand information, saved for future sessions in this browser.</p>
+          </div>
+
+          <form id="businessProfileForm" class="profile-form">
+
+            <div class="profile-field">
+              <label for="businessName">Business name *</label>
+              <input id="businessName" name="businessName"
+                type="text" placeholder="e.g. Aurevia" required>
+            </div>
+
+            <div class="profile-field">
+              <label for="businessWebsite">Website</label>
+              <input id="businessWebsite" name="businessWebsite"
+                type="url" placeholder="https://yourbusiness.com">
+            </div>
+
+            <div class="profile-field">
+              <label for="businessProducts">Products or services *</label>
+              <textarea id="businessProducts" name="businessProducts"
+                placeholder="What do you sell? What makes your products useful?"
+                required></textarea>
+            </div>
+
+            <div class="profile-field">
+              <label for="targetAudience">Target audience *</label>
+              <textarea id="targetAudience" name="targetAudience"
+                placeholder="Who are your ideal customers?"
+                required></textarea>
+            </div>
+
+            <div class="profile-field">
+              <label for="brandVoice">Brand voice *</label>
+              <select id="brandVoice" name="brandVoice" required>
+                <option value="">Choose your brand voice</option>
+                <option value="Premium and elegant">Premium and elegant</option>
+                <option value="Friendly and approachable">Friendly and approachable</option>
+                <option value="Bold and energetic">Bold and energetic</option>
+                <option value="Professional and trustworthy">Professional and trustworthy</option>
+                <option value="Playful and witty">Playful and witty</option>
+                <option value="Minimalist and direct">Minimalist and direct</option>
+              </select>
+            </div>
+
+            <div class="profile-field">
+              <label for="marketingGoal">Main marketing goal *</label>
+              <select id="marketingGoal" name="marketingGoal" required>
+                <option value="">Choose your main goal</option>
+                <option value="Increase sales">Increase sales</option>
+                <option value="Improve conversion rates">Improve conversion rates</option>
+                <option value="Build brand awareness">Build brand awareness</option>
+                <option value="Generate leads">Generate leads</option>
+                <option value="Increase customer retention">Increase customer retention</option>
+              </select>
+            </div>
+
+            <div class="profile-field">
+              <label for="brandNotes">Additional brand information</label>
+              <textarea id="brandNotes" name="brandNotes"
+                placeholder="Brand values, preferred phrases, restrictions, competitors, or other useful context."></textarea>
+            </div>
+
+            <div>
+              <button type="submit" class="generate">
+                Save Business Profile →
+              </button>
+              <p id="profileSaveStatus" class="profile-save-status"
+                role="status" aria-live="polite"></p>
+            </div>
+
+          </form>
+        </div>
+
+      </section>
 
   </main>
 
