@@ -381,52 +381,54 @@
       min-height: 100px;
     }
 
+    /* BUSINESS PROFILE */
+
     .page-hidden {
-  display: none !important;
-}
+      display: none !important;
+    }
 
-.profile-form {
-  display: grid;
-  gap: 20px;
-  padding: 30px;
-}
+    .profile-form {
+      display: grid;
+      gap: 20px;
+      padding: 30px;
+    }
 
-.profile-field {
-  display: grid;
-  gap: 8px;
-}
+    .profile-field {
+      display: grid;
+      gap: 8px;
+    }
 
-.profile-field label {
-  font-size: 12px;
-  font-weight: 800;
-}
+    .profile-field label {
+      font-size: 12px;
+      font-weight: 800;
+    }
 
-.profile-field input,
-.profile-field select,
-.profile-field textarea {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid #d8d6d1;
-  border-radius: 10px;
-  background: #fafaf8;
-  font: inherit;
-  font-size: 14px;
-}
+    .profile-field input,
+    .profile-field select,
+    .profile-field textarea {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d8d6d1;
+      border-radius: 10px;
+      background: #fafaf8;
+      font: inherit;
+      font-size: 14px;
+    }
 
-.profile-field textarea {
-  min-height: 100px;
-}
+    .profile-field textarea {
+      min-height: 100px;
+    }
 
-.profile-field input:focus,
-.profile-field select:focus,
-.profile-field textarea:focus {
-  outline: 1px solid #111;
-}
+    .profile-field input:focus,
+    .profile-field select:focus,
+    .profile-field textarea:focus {
+      outline: 1px solid #111;
+    }
 
-.profile-save-status {
-  color: #4d8056;
-  font-size: 13px;
-}
+    .profile-save-status {
+      color: #4d8056;
+      font-size: 13px;
+    }
 
     /* MOBILE */
 
@@ -441,11 +443,17 @@
         position: relative;
         width: 100%;
         height: auto;
-        padding: 20px;
+        padding: 18px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
       }
 
       .logo {
-        margin-bottom: 20px;
+        width: 100%;
+        margin-bottom: 8px;
       }
 
       .workspace-label {
@@ -453,11 +461,19 @@
       }
 
       .nav-item {
-        display: none;
+        display: block;
+        width: auto;
+        flex: 1 1 auto;
+        margin-bottom: 0;
+        padding: 11px 9px;
+        font-size: 12px;
       }
 
       .sidebar-bottom {
-        display: none;
+        display: block;
+        width: 100%;
+        margin-top: 8px;
+        padding-top: 8px;
       }
 
       .main {
@@ -476,7 +492,8 @@
         grid-template-columns: 1fr 1fr;
       }
 
-      .generator {
+      .generator,
+      .profile-form {
         padding: 20px;
       }
 
@@ -493,6 +510,21 @@
         width: 100%;
       }
     }
+
+    @media (max-width: 380px) {
+      .tools {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        padding: 0 14px;
+      }
+
+      .content {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
   </style>
 </head>
 
@@ -506,19 +538,29 @@
 
     <div class="workspace-label">Workspace</div>
 
-    <button class="nav-item active" id="generatorNav" onclick="showPage('generator')">
+    <button
+      type="button"
+      class="nav-item active"
+      id="generatorNav"
+      onclick="showPage('generator')"
+    >
       ✦ AI Generator
     </button>
 
-    <button class="nav-item" id="profileNav" onclick="showPage('profile')">
+    <button
+      type="button"
+      class="nav-item"
+      id="profileNav"
+      onclick="showPage('profile')"
+    >
       ◈ Business Profile
     </button>
 
-    <button class="nav-item">
+    <button type="button" class="nav-item">
       ◇ My Projects
     </button>
 
-    <button class="nav-item">
+    <button type="button" class="nav-item">
       ◌ History
     </button>
 
@@ -529,7 +571,6 @@
     </div>
 
   </aside>
-
 
   <!-- MAIN -->
 
@@ -548,224 +589,236 @@
 
     </div>
 
-
     <div class="content">
-      
-      <div id="generatorPage">
 
-      <!-- WELCOME -->
+      <!-- AI GENERATOR PAGE -->
 
-      <div class="welcome">
+      <section id="generatorPage">
 
-        <div class="eyebrow">
-          Aurevia Intelligence
-        </div>
+        <!-- WELCOME -->
 
-        <h1>
-          What are we<br>
-          creating today?
-        </h1>
+        <div class="welcome">
 
-        <p>
-          Generate conversion-focused marketing content for your ecommerce business.
-          Choose a tool below or describe exactly what you need.
-        </p>
-
-      </div>
-
-
-      <!-- TOOLS -->
-
-      <div class="section-title">
-        Choose a tool
-      </div>
-
-      <div class="tools">
-
-        <div class="tool active" onclick="selectTool('product', this)">
-
-          <div class="tool-icon">
-            ◇
+          <div class="eyebrow">
+            Aurevia Intelligence
           </div>
 
-          <h3>Product Copy</h3>
+          <h1>
+            What are we<br>
+            creating today?
+          </h1>
 
           <p>
-            Product descriptions that communicate value and drive action.
+            Generate conversion-focused marketing content for your ecommerce business.
+            Choose a tool below or describe exactly what you need.
           </p>
 
         </div>
 
+        <!-- TOOLS -->
 
-        <div class="tool" onclick="selectTool('ads', this)">
+        <div class="section-title">
+          Choose a tool
+        </div>
 
-          <div class="tool-icon">
-            ↗
+        <div class="tools">
+
+          <div
+            class="tool active"
+            onclick="selectTool('product', this)"
+          >
+            <div class="tool-icon">◇</div>
+            <h3>Product Copy</h3>
+            <p>
+              Product descriptions that communicate value and drive action.
+            </p>
           </div>
 
-          <h3>Ad Copy</h3>
-
-          <p>
-            Hooks, headlines and advertising copy for your products.
-          </p>
-
-        </div>
-
-
-        <div class="tool" onclick="selectTool('social', this)">
-
-          <div class="tool-icon">
-            #
+          <div
+            class="tool"
+            onclick="selectTool('ads', this)"
+          >
+            <div class="tool-icon">↗</div>
+            <h3>Ad Copy</h3>
+            <p>
+              Hooks, headlines and advertising copy for your products.
+            </p>
           </div>
 
-          <h3>Social Content</h3>
-
-          <p>
-            Captions and content ideas for your social platforms.
-          </p>
-
-        </div>
-
-
-        <div class="tool" onclick="selectTool('email', this)">
-
-          <div class="tool-icon">
-            @
+          <div
+            class="tool"
+            onclick="selectTool('social', this)"
+          >
+            <div class="tool-icon">#</div>
+            <h3>Social Content</h3>
+            <p>
+              Captions and content ideas for your social platforms.
+            </p>
           </div>
 
-          <h3>Email Copy</h3>
-
-          <p>
-            Promotional emails designed to turn attention into action.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <!-- GENERATOR -->
-
-      <div class="workspace">
-
-        <div class="workspace-header">
-
-          <h2 id="toolTitle">
-            Product Copy
-          </h2>
-
-          <p id="toolDescription">
-            Tell Aurevia AI about your product and what you want to create.
-          </p>
+          <div
+            class="tool"
+            onclick="selectTool('email', this)"
+          >
+            <div class="tool-icon">@</div>
+            <h3>Email Copy</h3>
+            <p>
+              Promotional emails designed to turn attention into action.
+            </p>
+          </div>
 
         </div>
 
+        <!-- GENERATOR WORKSPACE -->
 
-        <div class="generator">
+        <div class="workspace">
 
-          <label class="prompt-label">
-            Your instructions
-          </label>
+          <div class="workspace-header">
 
-          <textarea
-            id="prompt"
-            placeholder="Example: Write a persuasive product description for a minimalist black watch aimed at young professionals. Focus on premium design, simplicity and everyday use."
-          ></textarea>
+            <h2 id="toolTitle">
+              Product Copy
+            </h2>
 
-
-          <div class="generator-footer">
-
-            <div class="hint">
-              Aurevia AI • Powered by your AI workspace
-            </div>
-
-            <button
-              class="generate"
-              id="generateButton"
-              onclick="generateAI()"
-            >
-              Generate →
-            </button>
+            <p id="toolDescription">
+              Tell Aurevia AI about your product and what you want to create.
+            </p>
 
           </div>
 
+          <div class="generator">
 
-          <!-- OUTPUT -->
+            <label class="prompt-label" for="prompt">
+              Your instructions
+            </label>
 
-          <div class="output" id="output">
+            <textarea
+              id="prompt"
+              placeholder="Example: Write a persuasive product description for a minimalist black watch aimed at young professionals. Focus on premium design, simplicity and everyday use."
+            ></textarea>
 
-            <div class="output-top">
+            <div class="generator-footer">
 
-              <div class="output-title">
-                Generated result
+              <div class="hint">
+                Aurevia AI • Powered by your AI workspace
               </div>
 
               <button
-                class="copy-button"
-                onclick="copyResult()"
+                type="button"
+                class="generate"
+                id="generateButton"
+                onclick="generateAI()"
               >
-                Copy
+                Generate →
               </button>
 
             </div>
 
-            <div
-              class="output-box"
-              id="result"
-            ></div>
+            <!-- OUTPUT -->
+
+            <div class="output" id="output">
+
+              <div class="output-top">
+
+                <div class="output-title">
+                  Generated result
+                </div>
+
+                <button
+                  type="button"
+                  class="copy-button"
+                  onclick="copyResult()"
+                >
+                  Copy
+                </button>
+
+              </div>
+
+              <div
+                class="output-box"
+                id="result"
+                aria-live="polite"
+              ></div>
+
+            </div>
 
           </div>
 
         </div>
 
-      </div>
+      </section>
 
-    </div>
- 
-      <!-- BUSINESS PROFILE -->
+      <!-- BUSINESS PROFILE PAGE -->
+
       <section id="profilePage" class="page-hidden">
 
         <div class="welcome">
-          <div class="eyebrow">Business Intelligence</div>
-          <h1>Your business.<br>Your strategy.</h1>
+
+          <div class="eyebrow">
+            Business Intelligence
+          </div>
+
+          <h1>
+            Your business.<br>
+            Your strategy.
+          </h1>
+
           <p>
             Tell Aurevia about your business so it can create
             more relevant, consistent marketing content.
           </p>
+
         </div>
 
         <div class="workspace">
+
           <div class="workspace-header">
             <h2>Business Profile</h2>
-            <p>Your brand information, saved for future sessions in this browser.</p>
+            <p>
+              Your brand information, saved for future sessions in this browser.
+            </p>
           </div>
 
           <form id="businessProfileForm" class="profile-form">
 
             <div class="profile-field">
               <label for="businessName">Business name *</label>
-              <input id="businessName" name="businessName"
-                type="text" placeholder="e.g. Aurevia" required>
+              <input
+                id="businessName"
+                name="businessName"
+                type="text"
+                placeholder="e.g. Aurevia"
+                required
+              >
             </div>
 
             <div class="profile-field">
               <label for="businessWebsite">Website</label>
-              <input id="businessWebsite" name="businessWebsite"
-                type="url" placeholder="https://yourbusiness.com">
+              <input
+                id="businessWebsite"
+                name="businessWebsite"
+                type="url"
+                placeholder="https://yourbusiness.com"
+              >
             </div>
 
             <div class="profile-field">
               <label for="businessProducts">Products or services *</label>
-              <textarea id="businessProducts" name="businessProducts"
+              <textarea
+                id="businessProducts"
+                name="businessProducts"
                 placeholder="What do you sell? What makes your products useful?"
-                required></textarea>
+                required
+              ></textarea>
             </div>
 
             <div class="profile-field">
               <label for="targetAudience">Target audience *</label>
-              <textarea id="targetAudience" name="targetAudience"
+              <textarea
+                id="targetAudience"
+                name="targetAudience"
                 placeholder="Who are your ideal customers?"
-                required></textarea>
+                required
+              ></textarea>
             </div>
 
             <div class="profile-field">
@@ -795,58 +848,47 @@
 
             <div class="profile-field">
               <label for="brandNotes">Additional brand information</label>
-              <textarea id="brandNotes" name="brandNotes"
-                placeholder="Brand values, preferred phrases, restrictions, competitors, or other useful context."></textarea>
+              <textarea
+                id="brandNotes"
+                name="brandNotes"
+                placeholder="Brand values, preferred phrases, restrictions, competitors, or other useful context."
+              ></textarea>
             </div>
 
             <div>
-              <button type="submit" class="generate">
+              <button
+                type="submit"
+                class="generate"
+              >
                 Save Business Profile →
               </button>
-              <p id="profileSaveStatus" class="profile-save-status"
-                role="status" aria-live="polite"></p>
+
+              <p
+                id="profileSaveStatus"
+                class="profile-save-status"
+                role="status"
+                aria-live="polite"
+              ></p>
             </div>
 
           </form>
+
         </div>
 
       </section>
 
+    </div><!-- End of .content -->
+
   </main>
 
-
   <script>
+    "use strict";
 
     let currentTool = "product";
 
-const profileStorageKey = "aurevia_business_profile_v1";
+    const profileStorageKey = "aurevia_business_profile_v1";
 
-function showPage(page) {
-  const generatorPage = document.getElementById("generatorPage");
-  const profilePage = document.getElementById("profilePage");
-  const generatorNav = document.getElementById("generatorNav");
-  const profileNav = document.getElementById("profileNav");
-
-  generatorPage.classList.toggle("page-hidden", page !== "generator");
-  profilePage.classList.toggle("page-hidden", page !== "profile");
-
-  generatorNav.classList.toggle("active", page === "generator");
-  profileNav.classList.toggle("active", page === "profile");
-
-  document.querySelector(".topbar-title").textContent =
-    page === "profile" ? "Business Profile" : "Aurevia AI";
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function loadBusinessProfile() {
-  try {
-    const saved = localStorage.getItem(profileStorageKey);
-    if (!saved) return;
-
-    const profile = JSON.parse(saved);
-
-    [
+    const profileFieldIds = [
       "businessName",
       "businessWebsite",
       "businessProducts",
@@ -854,215 +896,294 @@ function loadBusinessProfile() {
       "brandVoice",
       "marketingGoal",
       "brandNotes"
-    ].forEach(id => {
-      const field = document.getElementById(id);
-      if (field && typeof profile[id] === "string") {
-        field.value = profile[id];
+    ];
+
+    /* PAGE NAVIGATION */
+
+    function showPage(page) {
+      const generatorPage = document.getElementById("generatorPage");
+      const profilePage = document.getElementById("profilePage");
+      const generatorNav = document.getElementById("generatorNav");
+      const profileNav = document.getElementById("profileNav");
+      const title = document.querySelector(".topbar-title");
+
+      if (
+        !generatorPage ||
+        !profilePage ||
+        !generatorNav ||
+        !profileNav ||
+        !title
+      ) {
+        console.error(
+          "Aurevia navigation could not find a required page element."
+        );
+        return;
       }
-    });
-  } catch (error) {
-    console.error("Unable to load the business profile.");
-  }
-}
 
-document.getElementById("businessProfileForm").addEventListener(
-  "submit",
-  function (event) {
-    event.preventDefault();
+      const showProfile = page === "profile";
 
-    const profile = {};
+      generatorPage.classList.toggle("page-hidden", showProfile);
+      profilePage.classList.toggle("page-hidden", !showProfile);
 
-    [
-      "businessName",
-      "businessWebsite",
-      "businessProducts",
-      "targetAudience",
-      "brandVoice",
-      "marketingGoal",
-      "brandNotes"
-    ].forEach(id => {
-      profile[id] = document.getElementById(id).value.trim();
-    });
+      generatorNav.classList.toggle("active", !showProfile);
+      profileNav.classList.toggle("active", showProfile);
 
-    try {
-      localStorage.setItem(profileStorageKey, JSON.stringify(profile));
+      title.textContent = showProfile
+        ? "Business Profile"
+        : "Aurevia AI";
 
-      document.getElementById("profileSaveStatus").textContent =
-        "Business profile saved successfully.";
-    } catch (error) {
-      document.getElementById("profileSaveStatus").textContent =
-        "Unable to save. Please check your browser storage settings.";
+      if (showProfile) {
+        loadBusinessProfile();
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     }
-  }
-);
 
-loadBusinessProfile();
+    /* BUSINESS PROFILE: LOAD */
+
+    function loadBusinessProfile() {
+      const status = document.getElementById("profileSaveStatus");
+
+      try {
+        const saved = localStorage.getItem(profileStorageKey);
+
+        if (!saved) {
+          return;
+        }
+
+        const profile = JSON.parse(saved);
+
+        profileFieldIds.forEach(function (id) {
+          const field = document.getElementById(id);
+
+          if (
+            field &&
+            profile &&
+            typeof profile[id] === "string"
+          ) {
+            field.value = profile[id];
+          }
+        });
+      } catch (error) {
+        console.error("Unable to load the saved business profile.");
+
+        if (status) {
+          status.textContent =
+            "Unable to load the saved profile. Please check your browser settings.";
+        }
+      }
+    }
+
+    /* BUSINESS PROFILE: SAVE */
+
+    const businessProfileForm =
+      document.getElementById("businessProfileForm");
+
+    if (businessProfileForm) {
+      businessProfileForm.addEventListener(
+        "submit",
+        function (event) {
+          event.preventDefault();
+
+          const profile = {};
+
+          profileFieldIds.forEach(function (id) {
+            const field = document.getElementById(id);
+            profile[id] = field ? field.value.trim() : "";
+          });
+
+          const status =
+            document.getElementById("profileSaveStatus");
+
+          try {
+            localStorage.setItem(
+              profileStorageKey,
+              JSON.stringify(profile)
+            );
+
+            if (status) {
+              status.textContent =
+                "Business profile saved successfully.";
+            }
+          } catch (error) {
+            console.error("Unable to save the business profile.");
+
+            if (status) {
+              status.textContent =
+                "Unable to save. Please check your browser storage settings.";
+            }
+          }
+        }
+      );
+    }
+
+    /* LOAD SAVED PROFILE ON STARTUP */
+
+    loadBusinessProfile();
+
+    /* GENERATOR TOOL SELECTION */
 
     function selectTool(tool, element) {
+      const validTools = ["product", "ads", "social", "email"];
+
+      if (!validTools.includes(tool)) {
+        return;
+      }
 
       currentTool = tool;
 
-      document.querySelectorAll(".tool").forEach(card => {
+      document.querySelectorAll(".tool").forEach(function (card) {
         card.classList.remove("active");
       });
 
-      element.classList.add("active");
-
+      if (element) {
+        element.classList.add("active");
+      }
 
       const title = document.getElementById("toolTitle");
       const description = document.getElementById("toolDescription");
       const prompt = document.getElementById("prompt");
 
+      const toolSettings = {
+        product: {
+          title: "Product Copy",
+          description:
+            "Tell Aurevia AI about your product and what you want to create.",
+          placeholder:
+            "Example: Write a persuasive product description for a minimalist black watch aimed at young professionals. Focus on premium design, simplicity and everyday use."
+        },
 
-      if (tool === "product") {
+        ads: {
+          title: "Ad Copy",
+          description:
+            "Create hooks, headlines and persuasive advertising copy.",
+          placeholder:
+            "Example: Create 5 powerful ad hooks for a premium black watch aimed at young professionals."
+        },
 
-        title.textContent = "Product Copy";
+        social: {
+          title: "Social Content",
+          description:
+            "Create engaging social media content for your brand.",
+          placeholder:
+            "Example: Write an Instagram caption launching a new minimalist watch collection. Make it premium, concise and engaging."
+        },
 
-        description.textContent =
-          "Tell Aurevia AI about your product and what you want to create.";
+        email: {
+          title: "Email Copy",
+          description:
+            "Create emails designed to turn attention into action.",
+          placeholder:
+            "Example: Write a launch email announcing a new minimalist watch collection. Include a clear call to action and only use verified offer details."
+        }
+      };
 
-        prompt.placeholder =
-          "Example: Write a persuasive product description for a minimalist black watch aimed at young professionals. Focus on premium design, simplicity and everyday use.";
+      const settings = toolSettings[tool];
 
-      }
-
-
-      if (tool === "ads") {
-
-        title.textContent = "Ad Copy";
-
-        description.textContent =
-          "Create hooks, headlines and persuasive advertising copy.";
-
-        prompt.placeholder =
-          "Example: Create 5 powerful ad hooks for a premium black watch aimed at young professionals.";
-
-      }
-
-
-      if (tool === "social") {
-
-        title.textContent = "Social Content";
-
-        description.textContent =
-          "Create engaging social media content for your brand.";
-
-        prompt.placeholder =
-          "Example: Write an Instagram caption launching a new minimalist watch collection. Make it premium, concise and engaging.";
-
-      }
-
-
-      if (tool === "email") {
-
-        title.textContent = "Email Copy";
-
-        description.textContent =
-          "Create emails designed to turn attention into action.";
-
-        prompt.placeholder =
-          "Example: Write a launch email announcing a new minimalist watch collection with a limited-time 20% discount.";
-
-      }
+      title.textContent = settings.title;
+      description.textContent = settings.description;
+      prompt.placeholder = settings.placeholder;
 
       prompt.focus();
-
     }
 
+    /* AI CONTENT GENERATION */
 
     async function generateAI() {
-
-      const prompt = document.getElementById("prompt").value.trim();
-
+      const promptField = document.getElementById("prompt");
       const button = document.getElementById("generateButton");
-
       const output = document.getElementById("output");
-
       const result = document.getElementById("result");
 
+      const prompt = promptField.value.trim();
 
       if (!prompt) {
-
         alert("Tell Aurevia AI what you want to create first.");
-
+        promptField.focus();
         return;
-
       }
 
-
       button.disabled = true;
-
       button.textContent = "Generating...";
 
       output.style.display = "block";
+      result.textContent =
+        "Aurevia AI is working on your request...";
 
-      result.textContent = "Aurevia AI is working on your request...";
-
+      let profile = {};
 
       try {
+        profile = JSON.parse(
+          localStorage.getItem(profileStorageKey) || "{}"
+        ) || {};
+      } catch (error) {
+        console.warn(
+          "Unable to read the saved business profile."
+        );
+      }
 
+      try {
         const response = await fetch("/api/generate", {
-
           method: "POST",
-
           headers: {
             "Content-Type": "application/json"
           },
-
           body: JSON.stringify({
             prompt: prompt,
             tool: currentTool,
-            profile: (() => {
-              try {
-                return JSON.parse(
-                  localStorage.getItem("aurevia_business_profile_v1")
-                ) || {};
-              } catch {
-                return {};
-              }
-            })()
+            profile: profile
+          })
         });
 
-        const data = await response.json();
+        let data;
 
+        try {
+          data = await response.json();
+        } catch (error) {
+          throw new Error(
+            "The server returned an unreadable response. Please try again."
+          );
+        }
 
         if (!response.ok) {
-
           throw new Error(
             data.error || "Something went wrong."
           );
-
         }
 
+        if (
+          typeof data.result !== "string" ||
+          !data.result.trim()
+        ) {
+          throw new Error(
+            "Aurevia AI returned an empty response. Please try again."
+          );
+        }
 
         result.textContent = data.result;
-
-
       } catch (error) {
-
         result.textContent =
           "Something went wrong: " + error.message;
-
+      } finally {
+        button.disabled = false;
+        button.textContent = "Generate →";
       }
-
-
-      button.disabled = false;
-
-      button.textContent = "Generate →";
-
     }
 
+    /* COPY GENERATED CONTENT */
 
     async function copyResult() {
-
       const result =
         document.getElementById("result").textContent;
 
-      if (!result) return;
-
+      if (!result.trim()) {
+        return;
+      }
 
       try {
-
         await navigator.clipboard.writeText(result);
 
         const button =
@@ -1070,20 +1191,15 @@ loadBusinessProfile();
 
         button.textContent = "Copied ✓";
 
-        setTimeout(() => {
-
+        setTimeout(function () {
           button.textContent = "Copy";
-
         }, 1500);
-
-      } catch {
-
-        alert("Unable to copy the result.");
-
+      } catch (error) {
+        alert(
+          "Unable to copy the result. Please select the text and copy it manually."
+        );
       }
-
     }
-
   </script>
 
 </body>
