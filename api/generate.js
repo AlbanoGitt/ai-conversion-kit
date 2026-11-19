@@ -310,12 +310,11 @@ Do not claim to have verified information that was not provided.
 
     return res.status(200).json({ result });
 
-  } catch (error) {
-    console.error("Aurevia backend error:", error.message);
+    } catch (error) {
+    console.error("Aurevia backend error:", error);
 
     return res.status(500).json({
-      error: "A server error occurred. Please try again.",
+      error: error.message || "Unknown backend error.",
     });
   }
-}
 ```
